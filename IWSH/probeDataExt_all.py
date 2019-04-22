@@ -21,7 +21,7 @@ for t in timeList:
     probeDataDict[t] = None
 for t in timeList:
     for probe in probes:
-        if probeDataDict[t] == None:
+        if type(probeDataDict[t]) != type(probeDataDict_temp[probe][t]):
             probeDataDict[t] = probeDataDict_temp[probe][t]
         else:
             probeDataDict[t] = np.vstack(probeDataDict[t],probeDataDict_temp[probe][t])
