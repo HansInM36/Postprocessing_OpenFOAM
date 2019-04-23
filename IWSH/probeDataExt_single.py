@@ -47,7 +47,7 @@ for startTime in startTimeList:
         probeData[:,1] = array(rows[1][2:]) # record y coordinate
         probeData[:,2] = array(rows[2][2:]) # record z coordinate
         for j in range(pNum):
-            probeData[j,3:] = array(rows[i+4][j+1:j+4])
+            probeData[j,3:] = array(rows[i+4][j*3+1:j*3+4])
         probeDataDict[timeList[i]] = probeData
 
 ''' save probeDataDict into a file with pickle '''
