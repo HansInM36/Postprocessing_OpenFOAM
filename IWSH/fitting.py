@@ -22,7 +22,7 @@ def func_ABL(p,kappa,z0,x):
     ABL Vx function
     p: parameter, a tuple (uf,kappa,z0)
     '''
-    return p * 1/kappa * np.log10(x/z0)
+    return p * 1/kappa * np.log(x/z0)
 
 def fit(func,p0,x,y):
     '''

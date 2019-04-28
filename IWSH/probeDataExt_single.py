@@ -8,7 +8,7 @@ import pickle
 projDir = '/home/rao/myproject/IWSH2019/'
 
 caseName = 'NBL.prec.newdomain.56cores'
-probe = 'probe0'
+probe = 'sampleP'
 caseDir = caseName + '/postProcessing/'
 
 startTimeList = os.listdir(projDir + caseDir + probe + '/' + '.')

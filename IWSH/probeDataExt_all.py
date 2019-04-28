@@ -5,7 +5,7 @@ import numpy as np
 
 ''' directories '''
 projDir = '/home/rao/myproject/IWSH2019/'
-probes = ['probe0']
+probes = ['sampleP']
 caseName = 'NBL.prec.newdomain.56cores'
 probeDataDict_temp = {}
 

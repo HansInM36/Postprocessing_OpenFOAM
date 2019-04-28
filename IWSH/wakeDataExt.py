@@ -5,10 +5,10 @@ from numpy import *
 import pickle
 
 # the directory where the wake data locate
-projDir = '/home/rao/OpenFOAM/rao-2.3.1/myproject/SOWFA/'
-secList = ['Sec0', 'Sec1', 'Sec2', 'Sec3', 'PlaneY', 'PlaneZ']
+projDir = '/home/rao/myproject/IWSH2019/'
+secList = ['Sec0']
 
-caseName = 'CBL.prec'
+caseName = 'NBL.prec.newdomain.56cores'
 caseDir = caseName + '/postProcessing/surfaces/'
 
 timeList = os.listdir(projDir + caseDir + '.')
@@ -20,8 +20,8 @@ wakeDataDict = dict(zip(timeList,timeList))
 for time in timeList:
     secDataDict = dict(zip(secList,secList)) # initialize a dict storing wake data in each section of a certain time step
     for sec in secList:
-        file_mesh = open(projDir + caseDir + time + '/U' + '/wake' + sec + '.000.mesh.csv', 'r')
-        file_U = open(projDir + caseDir + time + '/U' + '/wake' + sec + '.000.U.csv', 'r')
+        file_mesh = open(projDir + caseDir + time + '/U' + '/' + sec + '.000.mesh.csv', 'r')
+        file_U = open(projDir + caseDir + time + '/U' + '/' + sec + '.000.U.csv', 'r')
         data_mesh = csv.reader(file_mesh)
         data_U = csv.reader(file_U)
         rows_mesh = [row for row in data_mesh] # all information of the file are stored in a list containing lists the number
@@ -45,6 +45,6 @@ for time in timeList:
     wakeDataDict[time] = secDataDict
 
 ''' save wakeDataDict into a file with pickle '''
-f = open(caseName + '_wakeData', 'wb')
+f = open(projDir + 'postProcessing_all/' + caseName + '_' + secList[0] + '_wakeData', 'wb')
 pickle.dump(wakeDataDict, f)
 f.close()
