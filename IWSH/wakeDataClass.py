@@ -53,13 +53,6 @@ class WakeSec:
         meshData[:,3:6] = V_mesh
         self.meshData = meshData
 
-        # compute the horizontally averaged mesh Data (only valid for Ny section)
-        z_horizAve = self.segmentSum(meshData[:,2], pNum_z, pNum_x[2]+1)
-        Vx_horizAve = self.segmentSum(meshData[:,3], pNum_z, pNum_x[2]+1)
-        Vy_horizAve = self.segmentSum(meshData[:,4], pNum_z, pNum_x[2]+1)
-        Vz_horizAve = self.segmentSum(meshData[:,5], pNum_z, pNum_x[2]+1)
-        self.meshData_horizAve = {'z':z_horizAve, 'Vx':Vx_horizAve, 'Vy':Vy_horizAve, 'Vz':Vz_horizAve}
-
     def meshITP_Nx(self,y_axis,z_axis): # interpolate the original wake data and project it onto a structral mesh
         """ y_axis should be a tuple indicating the min, max value and the number of segments, like y_axis = (-240, 240, 60), and similarly the z_axis """
         pNum_y = y_axis[2] + 1
@@ -90,12 +83,6 @@ class WakeSec:
         meshData[:,3:6] = V_mesh
         self.meshData = meshData
 
-        # compute the horizontally averaged mesh Data (only valid for Ny section)
-        z_horizAve = self.segmentSum(meshData[:,2], pNum_z, pNum_y)
-        Vx_horizAve = self.segmentSum(meshData[:,3], pNum_z, pNum_y)
-        Vy_horizAve = self.segmentSum(meshData[:,4], pNum_z, pNum_y)
-        Vz_horizAve = self.segmentSum(meshData[:,5], pNum_z, pNum_y)
-        self.meshData_horizAve = {'z':z_horizAve, 'Vx':Vx_horizAve, 'Vy':Vy_horizAve, 'Vz':Vz_horizAve}
 
     def meshITP_Nz(self,x_axis,y_axis): # interpolate the original wake data and project it onto a structral mesh
         """ y_axis should be a tuple indicating the min, max value and the number of segments, like y_axis = (-240, 240, 60), and similarly the z_axis """
