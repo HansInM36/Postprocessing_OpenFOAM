@@ -6,7 +6,7 @@ import pickle
 
 # the directory where the wake data locate
 projDir = '/home/rao/myproject/IWSH2019/'
-secList = ['Sec0']
+secList = ['Sec11']
 
 caseName = 'NBL.prec.newdomain.56cores'
 caseDir = caseName + '/postProcessing/surfaces/'
