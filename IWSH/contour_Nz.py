@@ -22,7 +22,7 @@ wake_TI = {} # 求出所有 case 中尾流的湍流强度并存入该字典
 ave = {} # wake_ave 的网格化版本
 TI = {} # wake_ave 的网格化版本
 
-''' assemble all the data of different secs in wakeDataDict (ALMsolver)'''
+''' assemble all the data of different secs in wakeDataDict '''
 wakeDataDict = {} # 存储所有的原始尾流信息
 secDataDict = {}
 for sec in secList:
