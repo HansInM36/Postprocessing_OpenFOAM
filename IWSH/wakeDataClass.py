@@ -77,6 +77,8 @@ class Wake:
             intensity[section] = c_[self.wakeData[self.timeList[0]][section][:,0:4], (sum2 / v_ave)]
         return intensity #返回一个字典，key为截面，value是7列矩阵
 
+
+
 class Sec(object):
     """ 初始化参数为一个储存了某一截面尾流信息的字典，key值是时刻，键值是pNum行7列的array """
 
@@ -156,7 +158,7 @@ class Sec(object):
         else:
             b = t+tao+1
         a, b = int(a), int(b)
-        
+
         for r in range(self.pNum):
             Vx = 0
             Vy = 0
