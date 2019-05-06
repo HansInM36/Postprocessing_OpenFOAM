@@ -23,10 +23,8 @@ z = {}
 
 ''' 读入case3的数据 '''
 wake = {} # 把 wakeDataDict 中的信息以 Wake 类的形式储存
-wake_ave = {} # 求出所有 case 中尾流的时均值并存入该字典
-wake_TI = {} # 求出所有 case 中尾流的湍流强度并存入该字典
-ave = {} # wake_ave 的网格化版本
-TI = {} # wake_ave 的网格化版本
+wake_RS = {} # 求出所有 case 中尾流的时均值并存入该字典
+
 
 ''' assemble all the data of different secs in wakeDataDict '''
 wakeDataDict = {} # 存储所有的原始尾流信息
@@ -45,23 +43,18 @@ for time in timeList:
 del secDataDict
 
 case = 3
-# del wakeDataDict['300'] # 不知为何300s的数据行数与其他时间点不匹配
 wake[case] = Wake(wakeDataDict) # 记录case0信息后，重新回到上方录入case1的信息，以此类推，完成wake字典的初始化
-wake_ave[case] = wake[case].ave_wakeData() # wake_ave is a dict containing the average data of the wake
-# wake_TI[case] = wake[case].intensity()
-secData_ave = {}
-# secData_TI = {}
+wake_RS[case] = wake[case].ReStr((0,1)) # wake_ave is a dict containing the average data of the wake
+secData_RS = {}
+
 case = 3
-secData_ave[case] = dict(zip(wake[case].secList, wake[case].secList))
-# secData_TI[case] = dict(zip(wake[case].secList, wake[case].secList))
+secData_RS[case] = dict(zip(wake[case].secList, wake[case].secList))
 del wake
 sec = 'PlaneZ'
-secData_ave[case][sec] = SecITP(wake_ave[case][sec])
-del wake_ave
-# secData_TI[case][sec] = WakeSec(wake_TI[case][sec])
-# del wake_TI
-secData_ave[case][sec].meshITP_Nz((0, 2016, 1008), (0, 800, 400)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
-# secData_TI[case][sec].meshITP_Nz((0, 2016, 1008), (0, 800, 400))
+secData_RS[case][sec] = SecITP(wake_RS[case][sec])
+del wake_RS
+
+secData_RS[case][sec].meshITP_Nz((0, 2016, 1008), (0, 800, 400)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
 
 case = 3
 sec = 'PlaneZ'
@@ -71,18 +64,16 @@ y[case], x[case] = np.mgrid[slice(0, 2016 + dy, dy),
 y[case] = y[case].T
 x[case] = x[case].T
 z[case] = np.array(zeros(shape(x[case])))
-for row in secData_ave[case][sec].meshData:
+for row in secData_RS[case][sec].meshData:
     i = int(row[0,1]/dx) # i = int(row[0,0]/dx) for ALMsolver; i = int(row[0,1]/dx) for SOWFA
     j = int(row[0,0]/dy) # j = int(row[0,1]/dy) for ALMsolver; j = int(row[0,0]/dy) for SOWFA
-    z[case][i,j] = row[0,5]
+    z[case][i,j] = row[0,3]
 z[case] = z[case][:-1, :-1]
 
 ''' 读入case2的数据 '''
 wake = {} # 把 wakeDataDict 中的信息以 Wake 类的形式储存
-wake_ave = {} # 求出所有 case 中尾流的时均值并存入该字典
-wake_TI = {} # 求出所有 case 中尾流的湍流强度并存入该字典
-ave = {} # wake_ave 的网格化版本
-TI = {} # wake_ave 的网格化版本
+wake_RS = {} # 求出所有 case 中尾流的时均值并存入该字典
+
 
 ''' assemble all the data of different secs in wakeDataDict '''
 wakeDataDict = {} # 存储所有的原始尾流信息
@@ -103,21 +94,17 @@ del secDataDict
 case = 2
 del wakeDataDict['300'] # 不知为何300s的数据行数与其他时间点不匹配
 wake[case] = Wake(wakeDataDict) # 记录case0信息后，重新回到上方录入case1的信息，以此类推，完成wake字典的初始化
-wake_ave[case] = wake[case].ave_wakeData() # wake_ave is a dict containing the average data of the wake
-# wake_TI[case] = wake[case].intensity()
-secData_ave = {}
-# secData_TI = {}
+wake_RS[case] = wake[case].ReStr((0,1)) # wake_ave is a dict containing the average data of the wake
+secData_RS = {}
+
 case = 2
-secData_ave[case] = dict(zip(wake[case].secList, wake[case].secList))
-# secData_TI[case] = dict(zip(wake[case].secList, wake[case].secList))
+secData_RS[case] = dict(zip(wake[case].secList, wake[case].secList))
 del wake
 sec = 'PlaneZ'
-secData_ave[case][sec] = SecITP(wake_ave[case][sec])
-del wake_ave
-# secData_TI[case][sec] = WakeSec(wake_TI[case][sec])
-# del wake_TI
-secData_ave[case][sec].meshITP_Nz((0, 800, 400), (0, 2016, 1008)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
-# secData_TI[case][sec].meshITP_Nz((0, 2016, 1008), (0, 800, 400))
+secData_RS[case][sec] = SecITP(wake_RS[case][sec])
+del wake_RS
+
+secData_RS[case][sec].meshITP_Nz((0, 800, 400), (0, 2016, 1008)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
 
 case = 2
 sec = 'PlaneZ'
@@ -127,18 +114,16 @@ y[case], x[case] = np.mgrid[slice(0, 2016 + dy, dy),
 y[case] = y[case].T
 x[case] = x[case].T
 z[case] = np.array(zeros(shape(x[case])))
-for row in secData_ave[case][sec].meshData:
+for row in secData_RS[case][sec].meshData:
     i = int(row[0,0]/dx) # i = int(row[0,0]/dx) for ALMsolver; i = int(row[0,1]/dx) for SOWFA
     j = int(row[0,1]/dy) # j = int(row[0,1]/dy) for ALMsolver; j = int(row[0,0]/dy) for SOWFA
-    z[case][i,j] = row[0,5]
+    z[case][i,j] = row[0,3]
 z[case] = z[case][:-1, :-1]
 
 ''' 读入case0的数据 '''
 wake = {} # 把 wakeDataDict 中的信息以 Wake 类的形式储存
-wake_ave = {} # 求出所有 case 中尾流的时均值并存入该字典
-wake_TI = {} # 求出所有 case 中尾流的湍流强度并存入该字典
-ave = {} # wake_ave 的网格化版本
-TI = {} # wake_ave 的网格化版本
+wake_RS = {} # 求出所有 case 中尾流的时均值并存入该字典
+
 
 ''' assemble all the data of different secs in wakeDataDict '''
 wakeDataDict = {} # 存储所有的原始尾流信息
@@ -159,21 +144,17 @@ del secDataDict
 case = 0
 del wakeDataDict['300'] # 不知为何300s的数据行数与其他时间点不匹配
 wake[case] = Wake(wakeDataDict) # 记录case0信息后，重新回到上方录入case1的信息，以此类推，完成wake字典的初始化
-wake_ave[case] = wake[case].ave_wakeData() # wake_ave is a dict containing the average data of the wake
-# wake_TI[case] = wake[case].intensity()
-secData_ave = {}
-# secData_TI = {}
+wake_RS[case] = wake[case].ReStr((0,1)) # wake_ave is a dict containing the average data of the wake
+secData_RS = {}
+
 case = 0
-secData_ave[case] = dict(zip(wake[case].secList, wake[case].secList))
-# secData_TI[case] = dict(zip(wake[case].secList, wake[case].secList))
+secData_RS[case] = dict(zip(wake[case].secList, wake[case].secList))
 del wake
 sec = 'PlaneZ'
-secData_ave[case][sec] = SecITP(wake_ave[case][sec])
-del wake_ave
-# secData_TI[case][sec] = WakeSec(wake_TI[case][sec])
-# del wake_TI
-secData_ave[case][sec].meshITP_Nz((0, 800, 400), (0, 2016, 1008)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
-# secData_TI[case][sec].meshITP_Nz((0, 2016, 1008), (0, 800, 400))
+secData_RS[case][sec] = SecITP(wake_RS[case][sec])
+del wake_RS
+
+secData_RS[case][sec].meshITP_Nz((0, 800, 400), (0, 2016, 1008)) # ((0, 800, 400), (0, 2016, 1008)) for ALMsolver; ((0, 2016, 1008), (0, 800, 400)) for SOWFA
 
 case = 0
 sec = 'PlaneZ'
@@ -183,12 +164,11 @@ y[case], x[case] = np.mgrid[slice(0, 2016 + dy, dy),
 y[case] = y[case].T
 x[case] = x[case].T
 z[case] = np.array(zeros(shape(x[case])))
-for row in secData_ave[case][sec].meshData:
+for row in secData_RS[case][sec].meshData:
     i = int(row[0,0]/dx) # i = int(row[0,0]/dx) for ALMsolver; i = int(row[0,1]/dx) for SOWFA
     j = int(row[0,1]/dy) # j = int(row[0,1]/dy) for ALMsolver; j = int(row[0,0]/dy) for SOWFA
-    z[case][i,j] = row[0,5]
+    z[case][i,j] = row[0,3]
 z[case] = z[case][:-1, :-1]
-
 
 zbp = z.copy() # back up
 xbp = x.copy() # back up
@@ -197,26 +177,22 @@ x = xbp.copy()
 y = ybp.copy()
 z = zbp.copy()
 
+
 for i in [0,2,3]:
-    # x[i] = x[i][74:326,188:]
-    # y[i] = y[i][74:326,188:]
-    # z[i] = z[i][74:325,188:]
-    z[i] = z[i] / 11.4
+    x[i] = x[i][74:326,188:]
+    y[i] = y[i][74:326,188:]
+    z[i] = z[i][74:325,188:]
+    z[i] = abs(z[i]) / 11.4**2
 
 
-
-z[0] = -z[0]
-z[2] = -z[2]
-
-
-min, max = -2/11.4, 2/11.4
+min, max = 0, 0.004
 levels = MaxNLocator(nbins=40).tick_values(min, max)
 # 处理一下z
-# for i in range(4):
-#     z[i][where(z[i]>11.6)] = 11.4
-#     z[i][where(z[i]<min)] = min
+for i in [0,2]:
+    z[i][where(z[i]>max)] = max
+    z[i][where(z[i]<min)] = min
 
-cmap = plt.get_cmap('Spectral') #'viridis'
+cmap = plt.get_cmap('viridis') #'viridis'
 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
 fig, (ax0, ax2, ax3) = plt.subplots(nrows=3)
@@ -234,6 +210,14 @@ fig.colorbar(cf, ax=ax0)
 cf = ax2.contourf(y[2][:-1, :-1] + dx/2.,
                   x[2][:-1, :-1] + dy/2., z[2], levels=levels,
                   cmap=cmap)
+
+min, max = 0, 0.008
+levels = MaxNLocator(nbins=40).tick_values(min, max)
+# 处理一下z
+for i in [3]:
+    z[i][where(z[i]>max)] = max
+    z[i][where(z[i]<min)] = min
+
 fig.colorbar(cf, ax=ax2)
 cf = ax3.contourf(y[3][:-1, :-1] + dx/2.,
                   x[3][:-1, :-1] + dy/2., z[3], levels=levels,

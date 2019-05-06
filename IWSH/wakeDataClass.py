@@ -77,6 +77,25 @@ class Wake:
             intensity[section] = c_[self.wakeData[self.timeList[0]][section][:,0:4], (sum2 / v_ave)]
         return intensity #返回一个字典，key为截面，value是7列矩阵
 
+    def ReStr(self, D):
+        """ this function compute the Reynold Stress of each wake section """
+        '''
+        D is a tuple, 比如(0,2) 0代表x，1代表y，2代表z
+        '''
+        ave = self.ave_wakeData()
+        RS = dict(zip(self.secList, self.secList))
+        for section in self.secList:
+            v_ave = ave[section][:,4:7] + 0.0001 # 加一个小量避免出现分母为0
+            sum2 = np.zeros((v_ave.shape[0],1))
+            for time in self.timeList:
+                v = self.wakeData[time][section][:,4:7]
+                tv = v - v_ave
+                sum2 = sum2 + np.multiply(tv[:,D[0]], tv[:,D[1]])
+            sum2 = sum2 / len(self.timeList)
+            RS[section] = c_[self.wakeData[self.timeList[0]][section][:,0:4], sum2]
+            RS[section] = c_[RS[section], np.zeros((v_ave.shape[0],2))] # 这里是小瑕疵，因为网格化插值必须要求输入是7列矩阵，所以补上两列0向量，没有实际意义
+        return RS
+
 
 
 class Sec(object):
@@ -174,19 +193,6 @@ class Sec(object):
             sec_t_fd[r,1] = Vy
             sec_t_fd[r,2] = Vz
         return hstack((self.topoData, sec_t_fd))
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class SecITP:
