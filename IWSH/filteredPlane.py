@@ -222,26 +222,26 @@ for j in range(y[case][0].shape[0]):
     wc[case][j,1] = cp
 
 # 检测fit_gs函数的正确性, 顺便也能做某截面的拟合图像
-# p = x[2][:,630]
-# vd = z[2][:,630]
-# vd = 1 - vd/11.4
-# cp = ft.fit_gs((400,20),p,vd)
-# xx = p
-# yy = vd
-# delta = (np.max(xx) - np.min(xx)) / (np.shape(xx)[0] - 1)
-# S = sum(yy)*delta - 0.5*(yy[np.where(xx==np.min(xx))] + yy[np.where(xx==np.max(xx))])
-# yyp = ft.func_gs(cp,xx)*S
-# plt.figure(figsize = (8, 4))
-# plt.plot(xx, yy, 'ro-', linewidth = 1, label='velocity deficit')
-# plt.plot(xx, yyp, 'b-', linewidth = 1, label='gaussian fitting curve')
-# plt.xlabel('r/R')
-# plt.ylabel('1-Vx/V0')
-# plt.ylim(-0.1,0.4,0.1)
-# plt.xlim(274,526,63)
-# plt.xticks([274,337,400,463,526],['-2','-1','0','1','2'])
-# legend = plt.legend(loc='upper right', shadow=False, fontsize=10)
-# plt.grid()
-# plt.show()
+p = x[2][:,252]
+vd = z[2][:,252]
+vd = 1 - vd/11.4
+cp = ft.fit_gs((400,20),p,vd)
+xx = p
+yy = vd
+delta = (np.max(xx) - np.min(xx)) / (np.shape(xx)[0] - 1)
+S = sum(yy)*delta - 0.5*(yy[np.where(xx==np.min(xx))] + yy[np.where(xx==np.max(xx))])
+yyp = ft.func_gs(cp,xx)*S
+plt.figure(figsize = (8, 4))
+plt.plot(xx, yy, 'ro-', linewidth = 1, label='velocity deficit')
+plt.plot(xx, yyp, 'b-', linewidth = 1, label='gaussian fitting curve')
+plt.xlabel('r/R')
+plt.ylabel('1-Vx/V0')
+plt.ylim(-0.1,0.4,0.1)
+plt.xlim(274,526,63)
+plt.xticks([274,337,400,463,526],['-2','-1','0','1','2'])
+legend = plt.legend(loc='upper right', shadow=False, fontsize=10)
+plt.grid()
+plt.show()
 
 ax0.plot(wc[0][:,0], wc[0][:,1], 'k-', linewidth = 2)
 ax0.set_xlim(376, 2016)
