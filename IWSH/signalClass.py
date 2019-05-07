@@ -36,6 +36,7 @@ class SignalSeq:
 
 
     def PSE_t_AM(self, fs, X=None): # use autocorrelation function method for temporal power spectrum estimation
+        """ Power Spectra Estimation """
         '''
         X is signal sequence in 1D array
         fs is sample frequency
@@ -119,7 +120,7 @@ class SignalMat:
         kx = array([2*pi/i for i in lx[range(int(Size[0]/2))]])
         ky = array([2*pi/j for j in ly[range(int(Size[1]/2))]])
         kx.sort()
-        ky.sort()        
+        ky.sort()
         ps = fft.fft2(self.AR(Mat))
         ps = abs(ps)
         return ps

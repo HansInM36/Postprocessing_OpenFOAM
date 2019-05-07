@@ -7,8 +7,9 @@ import wakeDataClass
 from wakeDataClass import *
 from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
+import signalClass as sgn
 
-projDir = '/home/rao/myproject/IWSH2019/'
+projDir = '/media/nx/Ubuntu1/myproject/IWSH/'
 
 ''' load original wake data '''
 caseName = {0:'uniIn', 1:'turbIn-0.2', 2:'NBL.succ.newdomain.56cores'}
@@ -37,3 +38,23 @@ del wakeData_org # 汇总完了删除这个临时字典
 
 wakeSec[2] = Sec(wakeDataDict)
 del wakeDataDict
+
+VSeq = {}
+VSeq['4D'] = wakeSec[2].fSec_p(3,(880,400,90))
+VSeq['6D'] = wakeSec[2].fSec_p(3,(1132,400,90))
+VSeq['8D'] = wakeSec[2].fSec_p(3,(1384,400,90))
+VSeq['10D'] = wakeSec[2].fSec_p(3,(1636,400,90))
+
+seq = VSeq['6D'][:,0]
+seqMean = np.mean(seq)
+timeList = wakeSec[2].timeList
+x = linspace(0,120,241)
+y = seq -seqMean
+plt.plot(x.T, y.T, 'r-', linewidth = 1)
+plt.show()
+signal = sgn.SignalSeq(seq-seqMean)
+x = signal.PSE_t_AM(2)[0,:]
+x = x*126/11.4
+y = signal.PSE_t_AM(2)[1,:]
+plt.semilogx(x.T[1:], y.T[1:], 'ro-', linewidth = 1)
+plt.show()

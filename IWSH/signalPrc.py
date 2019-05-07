@@ -1,8 +1,8 @@
 import numpy as np
 from numpy import *
 import matplotlib.pyplot as plt
-import signalPrcClass
-from signalPrcClass import *
+import signalClass
+from signalClass import *
 import random
 
 ''' examples '''

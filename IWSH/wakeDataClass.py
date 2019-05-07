@@ -194,6 +194,26 @@ class Sec(object):
             sec_t_fd[r,2] = Vz
         return hstack((self.topoData, sec_t_fd))
 
+    def fSec_p(self, tao, p):
+        """ 用tao过滤某一点的时间序列，得到一个过滤后某点的时间序列 """
+        '''
+        p 是一个tuple，储存三个维度的坐标，比如（1000,300,450）
+        '''
+        data = self.secData
+        timeList = self.timeList
+        # 找 data 里面与目标点距离最近的点(r 就是该点的行号)，并以该点进行过滤
+        min = 99999
+        for r in self.topoData:
+            temp = (r[0,1]-p[0])**2 + (r[0,2]-p[1])**2 + (r[0,3]-p[2])**2
+            if temp < min:
+                min = temp
+                rmin = int(r[0,0]-1) # 行号和点号差了1
+
+        Vx = self.V_tSeq(rmin,'x')
+        Vy = self.V_tSeq(rmin,'y')
+        Vz = self.V_tSeq(rmin,'z')
+        return vstack((Vx,Vy,Vz)).T
+
 
 class SecITP:
     ''' 主要用于对某个平面信息进行网格化插值 '''

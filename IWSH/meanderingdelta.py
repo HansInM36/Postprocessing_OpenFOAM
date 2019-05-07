@@ -9,7 +9,7 @@ from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
 import fitting as ft
 
-projDir = '/home/rao/myproject/IWSH2019/'
+projDir = '/media/nx/Ubuntu1/myproject/IWSH/'
 
 ''' load original wake data '''
 caseName = {0:'uniIn', 1:'turbIn-0.2', 2:'NBL.succ.newdomain.56cores'}
@@ -19,7 +19,6 @@ sec = 'PlaneZ'
 wake = {} # 把 wakeDataDict 中的信息以 Wake 类的形式储存
 wakeSec = {}
 secData = {}
-timeListDict = {}
 
 ''' 读入 case2 的信息 '''
 case = 2
@@ -29,7 +28,6 @@ f = open(projDir + 'postProcessing_all/' + caseName[case] + '_' + sec + '_wakeDa
 wakeData_org = pickle.load(f) # all wake information of the case
 f.close()
 timeList = list(wakeData_org.keys())
-timeListDict[case] = timeList
 for time in timeList:
     t1 = wakeData_org[time][sec]
     wakeDataDict[time] = np.delete(t1, np.where(t1[:,3]==99999), axis=0)
@@ -44,7 +42,6 @@ f = open(projDir + 'postProcessing_all/' + caseName[case] + '_' + sec + '_wakeDa
 wakeData_org = pickle.load(f) # all wake information of the case
 f.close()
 timeList = list(wakeData_org.keys())
-timeListDict[case] = timeList
 for time in timeList:
     t1 = wakeData_org[time][sec]
     wakeDataDict[time] = np.delete(t1, np.where(t1[:,3]==99999), axis=0)
@@ -60,7 +57,6 @@ f = open(projDir + 'postProcessing_all/' + caseName[case] + '_' + sec + '_wakeDa
 wakeData_org = pickle.load(f) # all wake information of the case
 f.close()
 timeList = list(wakeData_org.keys())
-timeListDict[case] = timeList
 for time in timeList:
     t1 = wakeData_org[time][sec]
     wakeDataDict[time] = np.delete(t1, np.where(t1[:,3]==99999), axis=0)
@@ -116,8 +112,8 @@ wc_ave = {}
 sum_temp = {}
 sum_temp[case] = np.array(zeros((y[case][0].shape[0],1)))
 for time in timeList:
-    sum_temp += wc[case][time]**2
-wc_ave[case] = (sum_temp / len(timeList))**0.5
+    sum_temp[case] += wc[case][time]**2
+wc_ave[case] = (sum_temp[case] / len(timeList))**0.5
 wc_ave[case] = np.hstack((y[case][0].T,wc_ave[case]))
 
 case=1
@@ -159,8 +155,8 @@ wc_ave = {}
 sum_temp = {}
 sum_temp[case] = np.array(zeros((y[case][0].shape[0],1)))
 for time in timeList:
-    sum_temp += wc[case][time]**2
-wc_ave[case] = (sum_temp / len(timeList))**0.5
+    sum_temp[case] += wc[case][time]**2
+wc_ave[case] = (sum_temp[case] / len(timeList))**0.5
 wc_ave[case] = np.hstack((y[case][0].T,wc_ave[case]))
 
 case=2
@@ -202,6 +198,6 @@ wc_ave = {}
 sum_temp = {}
 sum_temp[case] = np.array(zeros((y[case][0].shape[0],1)))
 for time in timeList:
-    sum_temp += wc[case][time]**2
-wc_ave[case] = (sum_temp / len(timeList))**0.5
+    sum_temp[case] += wc[case][time]**2
+wc_ave[case] = (sum_temp[case] / len(timeList))**0.5
 wc_ave[case] = np.hstack((y[case][0].T,wc_ave[case]))
