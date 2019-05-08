@@ -4,9 +4,9 @@ import pickle  # for reading the original wake data
 import numpy as np
 
 ''' directories '''
-projDir = '/home/rao/myproject/IWSH2019/'
-probes = ['sampleP']
-caseName = 'NBL.prec.newdomain.56cores'
+projDir = '/media/nx/Ubuntu/myproject/IWSH/'
+probes = ['probe1']
+caseName = 'NBL.succ.newdomain.56cores'
 probeDataDict_temp = {}
 
 for probe in probes:

@@ -10,6 +10,9 @@ projDir = '/media/nx/Ubuntu/myproject/IWSH/'
 caseName = 'NBL.succ.newdomain.56cores'
 probe = 'probe1'
 caseDir = caseName + '/postProcessing/'
+startT = 18180
+stopT = 18300
+deltaT = 0.02
 
 startTimeList = os.listdir(projDir + caseDir + probe + '/' + '.')
 startTimeList.sort()
@@ -41,14 +44,25 @@ for startTime in startTimeList:
     pNum = len(rows[0]) - 2
     timeList = [row[0] for row in rows[4:]]
     timeList.sort()
-    for i in range(len(timeList)):
+    i = 0
+    while round(float(timeList[i]),2) < startT:
+        i += 1
+    j = 0
+    while round(float(timeList[j]),2) != stopT:
+        j += 1
+    rstart = i
+    rstop = j
+
+    for i in range(rstart,rstop+1):
         probeData = array(zeros((pNum,6)))
         probeData[:,0] = array(rows[0][2:]) # record x coordinate
         probeData[:,1] = array(rows[1][2:]) # record y coordinate
         probeData[:,2] = array(rows[2][2:]) # record z coordinate
         for j in range(pNum):
             probeData[j,3:] = array(rows[i+4][j*3+1:j*3+4])
-        probeDataDict[timeList[i]] = probeData
+        t = round(startT + 0.02*(i-rstart),2)
+        probeDataDict[str(t)] = probeData
+
 
 ''' save probeDataDict into a file with pickle '''
 f = open(projDir + 'postProcessing_all/' + caseName + '_' + probe + '_probeData', 'wb')

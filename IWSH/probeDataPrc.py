@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 ''' loads the probeData '''
 # directories
-projDir = '/home/rao/myproject/IWSH2019/'
+projDir = '/media/nx/Ubuntu/myproject/IWSH/'
 case = {0:'NBL.prec.newdomain.56cores'}
 
 probeData = {} # original probeDataDict of all cases

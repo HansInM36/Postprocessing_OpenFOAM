@@ -9,12 +9,16 @@ import fitting as fit
 from matplotlib.colors import BoundaryNorm
 from matplotlib.ticker import MaxNLocator
 
-projDir = '/media/nx/Ubuntu1/myproject/IWSH/'
+projDir = '/media/nx/Ubuntu/myproject/IWSH/'
 
 ''' load original wake data '''
 caseName = {0:'uniIn', 1:'turbIn-0.1', 2:'turbIn-0.2', 3:'NBL.succ.newdomain.56cores'}
 
 secList = ['PlaneY']
+
+x = {}
+y = {}
+z = {}
 
 wake = {} # 把 wakeDataDict 中的信息以 Wake 类的形式储存
 wake_ave = {} # 求出所有 case 中尾流的时均值并存入该字典
@@ -22,11 +26,13 @@ wake_TI = {} # 求出所有 case 中尾流的湍流强度并存入该字典
 ave = {} # wake_ave 的网格化版本
 TI = {} # wake_ave 的网格化版本
 
+case = 0
+
 ''' assemble all the data of different secs in wakeDataDict (ALMsolver)'''
 wakeDataDict = {} # 存储所有的原始尾流信息
 secDataDict = {}
 for sec in secList:
-    f = open(projDir + 'postProcessing_all/' + caseName[2] + '_' + sec + '_wakeData', 'rb')
+    f = open(projDir + 'postProcessing_all/' + caseName[case] + '_' + sec + '_wakeData', 'rb')
     secDataDict[sec] = pickle.load(f) # all wake information of the case
     f.close()
 timeList = list(secDataDict[secList[0]].keys())
@@ -39,14 +45,12 @@ for time in timeList:
 del secDataDict
 
 
-case = 2
 del wakeDataDict['300'] # 不知为何300s的数据行数与其他时间点不匹配
 wake[case] = Wake(wakeDataDict) # 记录case0信息后，重新回到上方录入case1的信息，以此类推，完成wake字典的初始化
 wake_ave[case] = wake[case].ave_wakeData() # wake_ave is a dict containing the average data of the wake
 
 secData_ave = {}
 
-case = 2
 secData_ave[case] = dict(zip(wake[case].secList, wake[case].secList))
 del wake
 sec = 'PlaneY'
@@ -56,11 +60,6 @@ del wake_ave
 
 
 ''' Vx contour for PlaneZ'''
-x = {}
-y = {}
-z = {}
-
-case = 2
 sec = 'PlaneY'
 dx, dy = 2, 2
 y[case], x[case] = np.mgrid[slice(0, 2016 + dy, dy),
@@ -86,16 +85,16 @@ for i in [0,2,3]:
     x[i] = x[i][:252,188:]
     y[i] = y[i][:252,188:]
     z[i] = z[i][:251,188:]
+    z[i] = z[i]/11.4
 
-
-min, max = 4, 12
+min, max = 0.6, 1.4
 levels = MaxNLocator(nbins=40).tick_values(min, max)
 # 处理一下z
-# for i in range(4):
-#     z[i][where(z[i]>12)] = 12
-#     z[i][where(z[i]<min)] = min
+for i in [0,2,3]:
+    z[i][where(z[i]>max)] = max
+    z[i][where(z[i]<min)] = min
 
-cmap = plt.get_cmap('hot') #'viridis'
+cmap = plt.get_cmap('gist_rainbow') #'viridis'
 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
 fig, (ax0, ax2, ax3) = plt.subplots(nrows=3)
