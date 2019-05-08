@@ -5,10 +5,10 @@ from numpy import *
 import pickle
 
 # the directory where the wake data locate
-projDir = '/home/rao/myproject/IWSH2019/'
-secList = ['PlaneZ']
+projDir = '/media/nx/Ubuntu/myproject/IWSH/'
+secList = ['Sec10D']
 
-caseName = 'NBL.succ.newdomain.56cores'
+caseName = 'uniIn'
 caseDir = caseName + '/postProcessing/surfaces/'
 
 timeList = os.listdir(projDir + caseDir + '.')
