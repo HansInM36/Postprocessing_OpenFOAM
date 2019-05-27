@@ -69,6 +69,18 @@ class SignalSeq:
         ps = ps[range(int(N/2))]
         return vstack((k,ps))
 
+    def SE_s(self, delta, X=None):
+        if X is None:
+            X = self.X
+        N = len(X)
+        kmax = 2*pi/delta/2
+        k = linspace(0, kmax, round(N/2))
+        ps = fft.fft(X)
+        ps = abs(ps)
+        ps = ps[range(round(N/2))]
+        return vstack((k,ps))
+
+
 class SignalMat:
     ''' members '''
     Mat = 0
