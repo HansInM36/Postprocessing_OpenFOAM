@@ -5,12 +5,12 @@ from numpy import *
 import pickle
 
 # the directory where the wake data locate
-projDir = '/media/nx/Ubuntu/myproject/ICCM2019/'
+projDir = '/home/rao/myproject/ICCM2019/'
 
-caseName = 'NBL.prec.254deg.11.4.0.001'
-probe = 'probe2'
+caseName = 'NBL.succ.0.001.m30'
+probe = 'probe10Dz'
 caseDir = caseName + '/postProcessing/'
-startT = 18000
+startT = 18240
 stopT = 18600
 deltaT = 0.02
 

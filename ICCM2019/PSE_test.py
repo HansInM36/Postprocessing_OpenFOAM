@@ -50,40 +50,6 @@ wv = wv.reshape((wv.shape[0]), order='C')
 pp = fit.fit_ABL(0.7,0.4,0.001,z[:13],wv[:13]) # u*=0.4075
 xp = fit.func_ABL(pp,0.4,0.001,z)
 
-plt.figure(figsize = (5, 6))
-plt.plot(wv/11.4, z, 'ko-', linewidth = 2, label='measured')
-plt.plot(xp/11.4, z, 'k--', linewidth = 2, label='logarithmic law')
-plt.ylabel('z(m)')
-plt.xlabel('u/u0')
-plt.xlim(0.4, 1.6, 0.2)
-legend = plt.legend(loc='upper left', shadow=False, fontsize='x-large')
-plt.grid()
-plt.show()
-
-plt.figure(figsize = (5, 6))
-plt.plot(wd - 15.52, z, 'kx-', linewidth = 2)
-plt.ylabel('z(m)')
-plt.xlabel('deg')
-plt.xlim(-10, 4, 2)
-plt.grid()
-plt.show()
-
-" 湍流强度廓线 "
-TI = np.zeros((pNum,1))
-for t in timeList:
-    vx = probeData[0][t][probe][:,3].reshape(TIx.shape, order='C')
-    vy = probeData[0][t][probe][:,4].reshape(TIy.shape, order='C')
-    TI = TI + (vx * np.cos(wd_rad) + vy * np.sin(wd_rad) - wv.reshape(TI.shape, order='C'))**2
-TI = (TI / tNum)**0.5 / wv.reshape(TI.shape, order='C')
-
-plt.figure(figsize = (5, 6))
-plt.plot((TI0+TI1+TI2)/3*100, z, 'ks-', linewidth = 2)
-plt.ylabel('z(m)')
-plt.xlabel('TI(%)')
-plt.xlim(0, 12, 2)
-plt.grid()
-plt.show()
-
 " 轮毂处速度时序 "
 probeData_ = probeData # 转换坐标系
 for t in timeList:
@@ -96,16 +62,6 @@ for i in range(tNum):
 v = v[3000:-2996]
 t = np.linspace(0,480,v.shape[0])
 v = v.reshape(t.shape, order='C')
-
-
-plt.figure(figsize = (8, 6))
-plt.plot(t, v/11.2, 'k-', linewidth = 2)
-plt.ylabel('u/u0')
-plt.xlabel('t(s)')
-plt.xlim(0, 500, 50)
-plt.ylim(0.8, 1.2, 0.2)
-plt.grid()
-plt.show()
 
 " 功率谱 "
 v = v - np.mean(v)
@@ -129,7 +85,11 @@ ff, pp = signal.periodogram(v, 50, 'flattop', scaling='spectrum')
 
 num = 11000
 plt.figure(figsize = (8, 6))
+# plt.loglog(ps[0]*63/11.4, ps[1]/(11.4*63), 'k-', linewidth = 1)
+# plt.loglog(f*63/11.4, p/(11.4*63), 'r-', linewidth = 1)
 plt.loglog(ff[1:-num]*63/11.4, pp[1:-num]/(11.4*63)*1e3, 'k--', linewidth = 1)
+# plt.loglog(f*63/11.4, pp/(11.4*63), 'k-.', linewidth = 1)
+# plt.loglog(n*90.1/11.4, S/(11.4*63), 'k--', linewidth = 1)
 plt.loglog(x, y/10000*1e3, 'k-', linewidth = 1)
 plt.xlim(0.01,10)
 plt.ylim(1e-12,1e1)

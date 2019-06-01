@@ -14,9 +14,9 @@ def trs(M):
     Otrs = (431.6, 343.9, 0)
 
     M_ = zeros(shape(M))
-    M_[:,0] = M[:,0] - Otrs[0]
-    M_[:,1] = M[:,1] - Otrs[1]
-    M_[:,2] = M[:,2] - Otrs[2]
+    M_[:,0] = M[:,0].reshape(M_[:,0].shape) - Otrs[0]
+    M_[:,1] = M[:,1].reshape(M_[:,1].shape) - Otrs[1]
+    M_[:,2] = M[:,2].reshape(M_[:,2].shape) - Otrs[2]
     M_[:,0:3] = dot(M_[:,0:3], Mtrs)
     M_[:,3:6] = dot(M[:,3:6], Mtrs)
     return M_
