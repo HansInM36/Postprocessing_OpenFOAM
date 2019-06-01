@@ -8,10 +8,10 @@ import pickle
 projDir = '/home/rao/myproject/ICCM2019/'
 
 caseName = 'NBL.succ.0.001.m30'
-probe = 'probe10Dz'
+probe = 'probe7Dy'
 caseDir = caseName + '/postProcessing/'
 startT = 18240
-stopT = 18600
+stopT = 18480
 deltaT = 0.02
 
 startTimeList = os.listdir(projDir + caseDir + probe + '/' + '.')

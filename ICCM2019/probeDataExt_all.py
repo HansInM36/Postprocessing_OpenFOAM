@@ -5,9 +5,8 @@ import numpy as np
 
 ''' directories '''
 projDir = '/home/rao/myproject/ICCM2019/'
-probes = ['probe0', 'probe0Dy', 'probe0Dz','probe2Dy', 'probe2Dz', 'probe4Dy', 'probe4Dz',\
-'probe6Dy', 'probe6Dz','probe8Dy', 'probe8Dz', 'probe10Dy', 'probe10Dz']
-caseName = 'NBL.succ.254deg.11.4.0.001'
+probes = ['probe4Dy', 'probe7Dy', 'probe10Dy']
+caseName = 'NBL.succ.0.001.m30'
 probeDataDict_temp = {}
 probeDataDict = dict(zip(probes,probes))
 

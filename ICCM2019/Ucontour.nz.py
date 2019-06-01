@@ -18,7 +18,7 @@ caseName = {0:'NBL.succ.254deg.11.4.0.001', 1:'NBL.succ.0.001.30', 2:'NBL.succ.0
 做图过程：首先提取该case下-3D截面的尾流信息作为来流速度，再依次获取2D、6D、10D处的尾流信息做图
 '''
 ''' 读入 case0-Sec2D 的信息 '''
-case = 0
+case = 2
 sec = 'PlaneZ'
 
 
