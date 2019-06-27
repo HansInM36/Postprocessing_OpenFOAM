@@ -74,7 +74,8 @@ class Wake:
                 v = self.wakeData[time][section][:,4:7]
                 sum2 = sum2 + np.power((v - v_ave), 2)
             sum2 = sum2 / len(self.timeList)
-            intensity[section] = c_[self.wakeData[self.timeList[0]][section][:,0:4], (sum2 / v_ave)]
+            sum2 = np.power(sum2, 0.5)
+            intensity[section] = c_[self.wakeData[self.timeList[0]][section][:,0:4], (sum2 / v_ave[:,0])]
         return intensity #返回一个字典，key为截面，value是7列矩阵
 
     def ReStr(self, D):
