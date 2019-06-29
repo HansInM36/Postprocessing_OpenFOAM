@@ -6,13 +6,15 @@ import pickle
 
 # the directory where the wake data locate
 projDir = '/home/rao/myproject/Journal2019.6/'
-secList = ['Sec-2D']
+secList = ['PlaneY']
 
-caseName = 'NBL.1T'
+caseName = 'CBL.1T'
 caseDir = caseName + '/postProcessing/surfaces/'
 
 timeList = os.listdir(projDir + caseDir + '.')
 timeList.sort()
+startIndex = timeList.index('18240')
+timeList = timeList[startIndex:]
 
 # initialize a dict storing wake data in each section of each time step
 wakeDataDict = dict(zip(timeList,timeList))
@@ -24,9 +26,13 @@ for time in timeList:
         file_U = open(projDir + caseDir + time + '/U' + '/' + sec + '.000.U.csv', 'r')
         data_mesh = csv.reader(file_mesh)
         data_U = csv.reader(file_U)
+        del file_mesh
+        del file_U
         rows_mesh = [row for row in data_mesh] # all information of the file are stored in a list containing lists the number
 # of which is the same as the number of lines in the file
         rows_U = [row for row in data_U]
+        del data_mesh
+        del data_U
 
         pNum = int(rows_mesh[8][0]) #total number of points in the transverse section
 
