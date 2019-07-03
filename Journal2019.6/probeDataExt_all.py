@@ -5,8 +5,10 @@ import numpy as np
 
 ''' directories '''
 projDir = '/home/rao/myproject/Journal2019.6/'
-probes = ['probe0', 'probe1', 'probe2']
-caseName = 'CBL'
+probes = ['probe-3Dy', 'probe-3Dz', 'probe2Dy', 'probe2Dz', 'probe3Dy', 'probe3Dz', 'probe4Dy', 'probe4Dz', 'probe5Dy', 'probe5Dz',
+          'probe6Dy', 'probe6Dz', 'probe7Dy', 'probe7Dz', 'probe8Dy', 'probe8Dz', 'probe9Dy', 'probe9Dz', 'probe10Dy', 'probe10Dz',
+          'probe11Dy', 'probe11Dz', 'probe12Dy', 'probe12Dz']
+caseName = 'NBL.1T'
 probeDataDict_temp = {}
 probeDataDict = dict(zip(probes,probes))
 

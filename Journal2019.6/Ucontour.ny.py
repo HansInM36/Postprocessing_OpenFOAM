@@ -18,7 +18,7 @@ caseName = {0:'NBL.1T', 1:'CBL.1T'}
 做图过程：首先提取该case下-3D截面的尾流信息作为来流速度，再依次获取2D、6D、10D处的尾流信息做图
 '''
 ''' 读入截面的信息 '''
-case = 1
+case = 0
 sec = 'PlaneY'
 
 
@@ -30,10 +30,23 @@ wake_mesh = {} # wake_ave 经转换矩阵处理后的网格化版本, SecITP 类
 
 
 ''' assemble all the data of different secs in wakeDataDict '''
-# wakeDataDict = {} # 存储所有的原始尾流信息
-f = open(projDir + 'postProcessing_all/data.org/' + caseName[case] + '_' + sec + '_wakeData', 'rb')
-wakeData_org = pickle.load(f) # all wake information of the case
+# # CBL case:
+# f = open(projDir + 'postProcessing_all/data.org/' + caseName[case] + '_' + sec + '_wakeData', 'rb')
+# wakeData_org = pickle.load(f) # all wake information of the case
+# f.close()
+
+# NBL case:
+f = open(projDir + 'postProcessing_all/data.org/' + caseName[case] + '_' + sec + '_wakeData_part1', 'rb')
+wakeData_org_part1 = pickle.load(f) # all wake information of the case
 f.close()
+f = open(projDir + 'postProcessing_all/data.org/' + caseName[case] + '_' + sec + '_wakeData_part2', 'rb')
+wakeData_org_part2 = pickle.load(f) # all wake information of the case
+f.close()
+wakeData_org = {**wakeData_org_part1, **wakeData_org_part2}
+del wakeData_org_part1
+del wakeData_org_part2
+
+
 wake[case] = Wake(wakeData_org)
 del wakeData_org # 汇总完了删除这个临时字典
 wake_ave[case] = wake[case].ave_wakeData()[sec]
@@ -62,6 +75,11 @@ for row in wake_mesh[case].meshData:
 z0 = np.zeros((z[case][:,0].shape))
 for i in range(z0.shape[0]): # 不这样复制z0本身就会改变
     z0[i] = z[case][i,0] # 来流速度
+''' save wc_ave into a file with pickle '''
+import pickle
+f = open(projDir + 'postProcessing_all/data.processed/' + caseName[case] + '_' + sec + '_u0', 'wb')
+pickle.dump(z0, f)
+f.close()
 
 for i in range(z[case].shape[1]):
     z[case][:,i] = (z0 - z[case][:,i]) / z0
@@ -91,13 +109,13 @@ ybp = y.copy() # back up
 min, max = -0.1, 0.5
 levels = MaxNLocator(nbins=40).tick_values(min, max)
 # 处理一下z
-for i in [1]:
+for i in [case]:
     z[i][where(z[i]>max)] = max
     z[i][where(z[i]<min)] = min
 cmap = plt.get_cmap('jet') #'viridis'
 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
-plt.figure(figsize = (16, 3))
+plt.figure(figsize = (14, 2.1))
 plt.contourf(x[case][:-1, :-1] + dy/2.,
                   y[case][:-1, :-1] + dx/2., z[case], levels=levels,
                   cmap=cmap)
@@ -126,6 +144,12 @@ for j in range(x[case][0].shape[0]):
     wc[j,0] = x[case][0,j]
     wc[j,1] = cp
 # plt.plot(wc[::30,0][1:], wc[::30,1][1:], 'ko', linewidth=1)
+''' save wc_ave into a file with pickle '''
+import pickle
+f = open(projDir + 'postProcessing_all/data.processed/' + caseName[case] + '_' + sec + '_wc_ave', 'wb')
+pickle.dump(wc, f)
+f.close()
+
 
 ''' wake velocity deficit profile '''
 for i in range(12):

@@ -6,15 +6,20 @@ import pickle
 
 # the directory where the wake data locate
 projDir = '/home/rao/myproject/Journal2019.6/'
-secList = ['PlaneY']
+secList = ['PlaneZ']
 
-caseName = 'CBL.1T'
+caseName = 'NBL.1T'
 caseDir = caseName + '/postProcessing/surfaces/'
 
 timeList = os.listdir(projDir + caseDir + '.')
 timeList.sort()
-startIndex = timeList.index('18240')
-timeList = timeList[startIndex:]
+# startIndex_1 = timeList.index('18252')
+# stopIndex_1 = timeList.index('18540')
+startIndex_2 = timeList.index('18540')
+
+# timeList = timeList[startIndex_1:stopIndex_1]
+timeList = timeList[startIndex_2:]
+
 
 # initialize a dict storing wake data in each section of each time step
 wakeDataDict = dict(zip(timeList,timeList))
@@ -51,6 +56,7 @@ for time in timeList:
     wakeDataDict[time] = secDataDict
 
 ''' save wakeDataDict into a file with pickle '''
-f = open(projDir + 'postProcessing_all/data.org/' + caseName + '_' + secList[0] + '_wakeData', 'wb')
+# f = open(projDir + 'postProcessing_all/data.org/' + caseName + '_' + secList[0] + '_wakeData_part1', 'wb')
+f = open(projDir + 'postProcessing_all/data.org/' + caseName + '_' + secList[0] + '_wakeData_part2', 'wb')
 pickle.dump(wakeDataDict, f)
 f.close()
