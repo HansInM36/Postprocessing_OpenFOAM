@@ -55,7 +55,7 @@ wake_mesh[case] = SecITP(wake_ave[case])
 wake_mesh[case].meshITP_Ny((-378, 1512, 1890), (0, 378, 378))
 # del wake_ave
 
-''' u contour for PlaneZ'''
+''' u contour for PlaneY'''
 x = {}
 y = {}
 z = {}
