@@ -141,3 +141,33 @@ class Output:
                 linkIndex = int((startT-float(startTimeList[0]))/self.deltat)
                 azimuthDict[i] = np.vstack((azimuthDict[i][:linkIndex,:], azimuthDict_[startTime][i]))
         return azimuthDict
+
+    def axialForce(self, segNum_):
+        " read azimuth and return a dict "
+
+        startTimeList = os.listdir(self.projDir + self.caseName + '/turbineOutput/' + '.')
+        startTimeList.sort()
+
+        turbines = list(range(0,self.nTurbine))
+
+        axialForceDict_ = {}
+        axialForceDict = {}
+
+        for startTime in startTimeList:
+            file_axialForce = open(self.projDir + self.caseName + '/turbineOutput/' + str(startTime) + '/axialForce', 'r')
+            data_axialForce = csv.reader(file_axialForce, delimiter=' ')
+            rows_axialForce = [row for row in data_axialForce]
+            axialForceDict_[startTime] = dict(zip(turbines, turbines))
+            for i in turbines:
+                # axialForceDict_[startTime][i] = mat([[float(row[1]), float(row[3])] for row in rows_axialForce[i+1::(self.nTurbine+1)]])
+                axialForceDict_[startTime][i] = {}
+                for j in range(3):
+                    axialForceDict_[startTime][i][j] = array([[float(row[k+4]) for k in range(segNum_)] for row in rows_axialForce[i*3+j+1::(self.nTurbine*segNum_+1)]])
+
+        for i in turbines: # 初始化一个0行矩阵，为了接下来可以在此基础上进行竖向拼接
+            azimuthDict[i] = np.zeros((0,azimuthDict_[startTime][i].shape[1]))
+            for startTime in startTimeList:
+                startT = float(startTime)
+                linkIndex = int((startT-float(startTimeList[0]))/self.deltat)
+                azimuthDict[i] = np.vstack((azimuthDict[i][:linkIndex,:], azimuthDict_[startTime][i]))
+        return azimuthDict
