@@ -12,7 +12,7 @@ from wakeDataClass import *
 # directories
 projDir = '/home/rao/myproject/Journal2019.6/'
 case = {0:'NBL.1T', 1:'CBL.1T'}
-cn = 1
+cn = 0
 
 probeData = {} # original probeDataDict of all cases
 

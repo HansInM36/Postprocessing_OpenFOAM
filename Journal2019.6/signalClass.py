@@ -1,6 +1,49 @@
 import numpy as np
 from numpy import *
 
+def nrm_seq(y,x):
+    """ 对序列y(x)进行归一化，即曲线面积为1 """
+    '''
+    121
+    '''
+    sum = abs(0.5*y[0]*(x[1]-x[0])) + abs(0.5*y[-1]*(x[-1]-x[-2]))
+    for i in range(1,x.shape[0]-1):
+        sum += abs(0.5*y[i]*(x[i+1]-x[i-1]))
+    return y/sum
+
+
+def drv_seq(y,x):
+    """ 对序列y(x)求导 """
+    '''
+    中心差分法
+    '''
+    '''
+    y = np.array([10,7,1,2,29,8,4])
+    x = np.array([1,2,3,4,5,6,7])
+    drv_seq(y,x)
+    '''
+    N = y.shape[0]
+    s = np.zeros(y.shape)
+    s[0] = (y[1]-y[0]) / (x[1]-x[0])
+    s[-1] = (y[-1]-y[-2]) / (x[-1]-x[-2])
+    for i in range(1,N-1):
+        s[i] = (y[i+1]-y[i-1]) / (x[i+1]-x[i-1])
+    return s
+
+def corr_seqs(x,y):
+    """ 求x和y的互相关函数 """
+    '''
+    x, y are signal sequences in 1D array with same size
+    '''
+    N = len(x)
+    m = array([i for i in range(0,N)])
+    Rxy = array(zeros(N))
+    for i in range(0,N):
+        Rxy[i] = sum([x[j] * y[j+i] for j in range(0,N-i)]) / N
+    return vstack((m,Rxy))
+
+
+
 class SignalSeq:
     ''' members '''
     X = 0

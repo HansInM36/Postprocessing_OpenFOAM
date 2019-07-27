@@ -51,6 +51,7 @@ yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = np.power(wcb[0][prbs[i]][:,1], 2)
     yy[i] = np.power(np.sum(temp) / temp.shape[0], 0.5)
+yy = flt_seq(yy,1)
 plt.plot(xx, yy, 'bs-', linewidth = 2, label='NBL-H')
 
 xx = [i for i in range(2,13)]
@@ -58,6 +59,7 @@ yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = np.power(wcb[1][prbs[i]][:,1], 2)
     yy[i] = np.power(np.sum(temp) / temp.shape[0], 0.5)
+yy = flt_seq(yy,1)
 plt.plot(xx, yy, 'rs-', linewidth = 2, label='CBL-H')
 
 
@@ -77,12 +79,14 @@ yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = np.power(wcb[2][prbs[i]][:,1], 2)
     yy[i] = np.power(np.sum(temp) / temp.shape[0], 0.5)
+yy = flt_seq(yy,1)
 plt.plot(xx, yy, 'bo--', linewidth = 2, label='NBL-V')
 xx = [i for i in range(2,13)]
 yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = np.power(wcb[3][prbs[i]][:,1], 2)
     yy[i] = np.power(np.sum(temp) / temp.shape[0], 0.5)
+yy = flt_seq(yy,1)
 plt.plot(xx, yy, 'ro--', linewidth = 2, label='CBL-V')
 plt.xlim(1, 13)
 # plt.xticks([240,270,300,330,360,390,420,450,480], [240,270,300,330,360,390,420,450,480])
@@ -113,14 +117,16 @@ yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = wcb[0][prbs[i]][:,2]
     yy[i] = np.mean(temp)*2*1.665
-plt.plot(xx, yy, 'bs-', linewidth = 2, label='NBL-H')
+yy = flt_seq(yy,1)
+plt.plot(xx[3:], yy[3:], 'bs-', linewidth = 2, label='NBL-H')
 
 xx = [i for i in range(2,13)]
 yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
     temp = wcb[1][prbs[i]][:,2]
     yy[i] = np.mean(temp)*2*1.665
-plt.plot(xx, yy, 'rs-', linewidth = 2, label='CBL-H')
+yy = flt_seq(yy,1)
+plt.plot(xx[3:], yy[3:], 'rs-', linewidth = 2, label='CBL-H')
 
 
 prbs = ['probe2Dz', 'probe3Dz', 'probe4Dz', 'probe5Dz',
@@ -142,12 +148,14 @@ for i in range(len(xx)):
     ww = np.zeros((wcb[2][prbs[i]].shape[0],1))
     temp = wcb[2][prbs[i]]
     for j in range(wcb[2][prbs[i]].shape[0]):
-        if temp[j,1]+90-temp[j,2]*1.665 > 0:
+        if temp[j,1]-temp[j,2]*1.665 > 0:
             ww[j,0] = temp[j,2]*1.665*2
         else:
-            ww[j,0] = temp[j,2]*1.665 + 90
+            # ww[j,0] = temp[j,2]*1.665*2
+            ww[j,0] = temp[j,2]*1.665 + temp[j,1]
     yy[i] = np.mean(ww)
-plt.plot(xx, yy, 'bo--', linewidth = 2, label='NBL-V')
+yy = flt_seq(yy,1)
+plt.plot(xx[3:], yy[3:], 'bo--', linewidth = 2, label='NBL-V')
 xx = [i for i in range(2,13)]
 yy = np.zeros((len(xx),1))
 for i in range(len(xx)):
@@ -156,15 +164,92 @@ for i in range(len(xx)):
     ww = np.zeros((wcb[3][prbs[i]].shape[0],1))
     temp = wcb[3][prbs[i]]
     for j in range(wcb[3][prbs[i]].shape[0]):
-        if temp[j,1]+90-temp[j,2]*1.665 > 0:
+        if temp[j,1]-temp[j,2]*1.665 > 0:
             ww[j,0] = temp[j,2]*1.665*2
         else:
-            ww[j,0] = temp[j,2]*1.665 + 90
+            # ww[j,0] = temp[j,2]*1.665*2
+            ww[j,0] = temp[j,2]*1.665 + temp[j,1]
     yy[i] = np.mean(ww)
-plt.plot(xx, yy, 'ro--', linewidth = 2, label='CBL-V')
-plt.xlim(1, 13)
-plt.ylim(126, 252)
-plt.yticks([126,157.5,189,220.5,252], [1.0,1.25,1.5,1.75,2.0])
+yy = flt_seq(yy,1)
+plt.plot(xx[3:], yy[3:], 'ro--', linewidth = 2, label='CBL-V')
+plt.xlim(4.5, 12.5)
+plt.ylim(75.6, 226.8)
+# plt.yticks([75.6,88.2,100.8,113.4,126,138.6,151.2,163.8,176.4,189,201.6,214.2,226.8], [0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8])
+plt.yticks([75.6,100.8,126,151.2,176.4,201.6,226.8], [0.6,0.8,1.0,1.2,1.4,1.6,1.8])
 legend = plt.legend(loc='upper left', shadow=False, fontsize='x-large')
+plt.grid()
+plt.show()
+
+
+# wake meandering频谱 (1) NBL,CBL
+# fs = 50
+# prb = 'probe9Dz'
+#
+# plt.figure(figsize = (8, 4))
+# # cl = {0:'bo-', 1:'ro-', 2:'bo-', 3:'ro-'}
+# cl = {0:'b-', 1:'r-', 2:'b-', 3:'r-'}
+# lb = {0:'NBL', 1:'CBL', 2:'NBL', 3:'CBL'}
+# for cn in [2,3]:
+#     tNum = wcb[cn][prb].shape[0]
+#     f = np.linspace(0, fs, tNum)
+#     ps = abs(fft.fft(wcb[cn][prb][:,1])/63)
+#     plt.semilogx(f[range(1,int(tNum/2))] * 126/11.4, ps[range(1,int(tNum/2))]/(60/12.1), cl[cn], linewidth = 1, label=lb[cn])
+# plt.ylabel('Sf/T')
+# plt.xlabel('f(Hz)')
+# plt.xlim(1e-2, 1e2)
+# legend = plt.legend(loc='upper right', shadow=False, fontsize='x-large')
+# plt.grid()
+# plt.show()
+
+
+# meandering 时历曲线
+prb = 'probe5Dz'
+plt.figure(figsize = (7, 4))
+cl = {0:'b-', 1:'r-', 2:'b-', 3:'r-'}
+lb = {0:'NBL', 1:'CBL', 2:'NBL', 3:'CBL'}
+for cn in [2,3]:
+    plt.plot(wcb[cn][prb][:,0]-18240, wcb[cn][prb][:,1]/63, cl[cn], linewidth = 1, label=lb[cn])
+plt.xlim(0, 600)
+# plt.ylim(-1.5, 1.5)
+# plt.xticks([240,270,300,330,360,390,420,450,480], [240,270,300,330,360,390,420,450,480])
+# plt.ylabel('wm/R')
+# plt.xlabel('t(s)')
+legend = plt.legend(loc='upper right', shadow=False, fontsize='x-large')
+plt.grid()
+plt.show()
+
+# wake meandering频谱 (2) 5,7,9D
+fs = 50
+cn = 2
+# prbs = ['probe5Dy', 'probe7Dy', 'probe9Dy']
+prbs = ['probe5Dz', 'probe7Dz', 'probe9Dz']
+
+plt.figure(figsize = (8, 5))
+cl = {0:'gold', 1:'darkorange', 2:'firebrick'} # CBL
+# cl = {0:'green', 1:'darkcyan', 2:'blue'} # NBL
+ls = {0:'-.', 1:'--', 2:'-'}
+lso = {0:'o', 1:'s', 2:'D'}
+lb = {0:'5D', 1:'7D', 2:'9D'}
+for i in [0,1,2]:
+    tNum = wcb[cn][prbs[i]].shape[0]
+    f = np.linspace(0, fs, tNum)[range(1,int(tNum/2))]
+    ps = abs(fft.fft(wcb[cn][prbs[i]][:,1]))[range(1,int(tNum/2))]
+    plt.semilogx(f * 126/11.4, ps / (126*60/12.1), color=cl[i], linestyle=ls[i], linewidth=1, label=lb[i])
+    # rk = np.argsort(-ps)
+    # pks = np.zeros((6,2))
+    # for r in range(6):
+    #     pks[r,0] = f[where(rk==r)]
+    #     pks[r,1] = ps[where(rk==r)]
+    rNum = 5
+    pks = np.zeros((rNum,2))
+    psr = np.sort(ps)
+    for r in range(rNum):
+        pks[r:,1] = psr[-r-1]
+        pks[r:,0] = f[np.where(ps==psr[-r-1])]
+    plt.scatter(pks[:,0] * 126/11.4, pks[:,1] / (126*60/12.1), color=cl[i], marker=lso[i])
+plt.ylabel('Sf/T')
+plt.xlabel('f(Hz)')
+plt.xlim(1e-2, 1e1)
+legend = plt.legend(loc='upper right', shadow=False, fontsize='x-large')
 plt.grid()
 plt.show()
